@@ -6,7 +6,7 @@ import { Videos, Sidebar } from "./";
 
 const Feed = () => {
   const [selectedCategory, setSelectedCategory] = useState("New");
-  const [videos, setVideos] = useState([]);
+  const [videos, setVideos] = useState(null);
 
   useEffect(() => {
     setVideos(null);
@@ -21,7 +21,7 @@ const Feed = () => {
         <Sidebar selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
         
         <Typography className="copyright" variant="body2" sx={{ mt: 1.5, color: "#fff", }}>
-          Copyright © 2022 JS LLOYD MEDIA
+          Copyright © 2022 JSM Media
         </Typography>
       </Box>
 
