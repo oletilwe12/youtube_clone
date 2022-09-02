@@ -1,45 +1,30 @@
-import React, { useState } from 'react';
-import { useNavigate } from "react-router-dom";
-import { Paper, IconButton } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
+import { useState, useEffect } from "react";
+import { Typography, Box } from "@mui/material";
+import { useParams } from "react-router-dom";
 
-const SearchBar = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const navigate = useNavigate();
+import { fetchFromAPI } from "../utils/fetchFromAPI";
+import { Videos } from "./";
 
-  const onhandleSubmit = (e) => {
-    e.preventDefault();
+const SearchFeed = () => {
+  const [videos, setVideos] = useState(null);
+  const { searchTerm } = useParams();
 
-    if (searchTerm) {
-      navigate(`/search/${searchTerm}`);
-
-      setSearchTerm('');
-    }
-  };
+  useEffect(() => {
+    fetchFromAPI(`search?part=snippet&q=${searchTerm}`)
+      .then((data) => setVideos(data.items))
+  }, [searchTerm]);
 
   return (
-    <Paper
-      component='form'
-      onSubmit={onhandleSubmit}
-      sx={{
-        borderRadius: 20,
-        border: '1px solid #e3e3e3',
-        pl: 2,
-        boxShadow: 'none',
-        mr: { sm: 5 },
-      }}
-    >
-      <input
-        className='search-bar'
-        placeholder='Search...'
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
-      <IconButton type='submit' sx={{ p: '10px', color: 'red' }} aria-label='search'>
-        <SearchIcon />
-      </IconButton>
-    </Paper>
+    <Box p={2} minHeight="95vh">
+      <Typography variant="h4" fontWeight={900}  color="white" mb={3} ml={{ sm: "100px"}}>
+        Search Results for <span style={{ color: "#FC1503" }}>{searchTerm}</span> videos
+      </Typography>
+      <Box display="flex">
+        <Box sx={{ mr: { sm: '100px' } }}/>
+        {<Videos videos={videos} />}
+      </Box>
+    </Box>
   );
 };
 
-export default SearchBar;
+export default SearchFeed;
